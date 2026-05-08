@@ -1,0 +1,14 @@
+{
+  "name": "webgpu",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@webgpu/types": "^0.1.69",
+    "vite": "^8.0.11"
+  }
+}
