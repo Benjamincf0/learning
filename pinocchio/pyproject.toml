@@ -1,0 +1,12 @@
+[project]
+name = "pinocchio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "daqp>=0.8.5",
+    "loop-rate-limiters>=1.2.0",
+    "meshcat>=0.3.2",
+    "pin-pink>=4.2.0",
+]
