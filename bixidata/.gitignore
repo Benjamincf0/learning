@@ -1,0 +1,13 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+/.env
+/DonneesOuvertes2025_010203040506070809101112.csv
+/typings/googlemaps
