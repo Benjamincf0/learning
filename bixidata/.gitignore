@@ -1,2 +1,3 @@
-*.feather
-*.pkl
+**.feather
+**.pkl
+**.csv
