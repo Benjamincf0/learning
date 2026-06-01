@@ -5,10 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "googlemaps>=4.10.0",
+    "google-maps-routing>=0.10.0",
+    "ipykernel>=7.2.0",
     "jupyter>=1.1.1",
     "lab>=8.9",
     "pandas>=2.3.3",
     "pandas-stubs>=2.3.3.260113",
+    "pyarrow>=24.0.0",
     "python-dotenv>=1.2.2",
 ]
