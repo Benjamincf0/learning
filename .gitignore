@@ -1,2 +1,5 @@
 /pinocchio/mecademic_description/meshes
 /pinocchio/__pycache__
+/bixidata/__pycache__
+/bixidata/typings/googlemaps
+/bixidata/.env
