@@ -2,4 +2,5 @@
 /pinocchio/__pycache__
 /bixidata/__pycache__
 /bixidata/typings/googlemaps
-/bixidata/.env
+**.env
+/bixidata/.ipynb_checkpoints
