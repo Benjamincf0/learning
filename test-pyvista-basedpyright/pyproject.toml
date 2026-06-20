@@ -1,0 +1,15 @@
+[project]
+name = "test-pyvista-basedpyright"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pyright>=1.1.410",
+    "pyvista>=0.48.4",
+]
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.39.8",
+]
