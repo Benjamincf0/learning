@@ -96,6 +96,24 @@ class CircularDoubleLL[T]:
             current_node = current_node.next
             yield current_node
 
+    def iter_forever(self):
+        if self._head == None:
+            return None
+
+        current_node: ListNode[T] = self._head
+        while self._count > 0:
+            yield current_node
+            current_node = current_node.next
+
+    def advance(self) -> ListNode[T]|None:
+        if self._head == None:
+            return None
+
+        current_node: ListNode[T] = self._head
+        if self._count > 0:
+            self._head = self._head.next
+            return current_node
+
     def __len__(self):
         return self._count
 

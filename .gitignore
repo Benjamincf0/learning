@@ -4,3 +4,5 @@
 /bixidata/typings/googlemaps
 **.env
 /bixidata/.ipynb_checkpoints
+/asyncpy/src/myasyncpy/__pycache__
+/asyncpy/tests/__pycache__
