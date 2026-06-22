@@ -2,7 +2,7 @@ from datetime import timedelta
 from main import myrange
 from hypothesis import settings, given, strategies as st
 
-MAX = 999999
+MAX = 99999999
 
 @given(a=st.integers(-MAX,MAX), b=st.integers(-MAX,MAX), c=st.integers(-MAX,MAX).filter(lambda x: x != 0))
 @settings(

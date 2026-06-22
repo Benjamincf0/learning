@@ -7,9 +7,6 @@ def myrange(a:int, b:int|None=None, step:int=1) -> Generator[int, None, None]:
     if b is None:
         a, b = 0, a
 
-    if (b-a)*step < 0:
-        return
-
     i = a 
     while (step < 0 and i > b) or (step > 0 and i < b):
         yield i
