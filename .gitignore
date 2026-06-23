@@ -1,9 +1,6 @@
 /pinocchio/mecademic_description/meshes
-/pinocchio/__pycache__
-/bixidata/__pycache__
 /bixidata/typings/googlemaps
 **.env
-/bixidata/.ipynb_checkpoints
-/asyncpy/src/myasyncpy/__pycache__
-/asyncpy/tests/__pycache__
-/test-generator/__pycache__
+**.ipynb_checkpoints
+**__pycache__
+**.cache*
