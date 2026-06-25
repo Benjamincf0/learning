@@ -11,14 +11,14 @@ class MyClass2:
     @wraps(MyClass.doSomething)
     def doSomethingWrapper(self, *args, **kwargs):
         """ Wrapper docstring """
-        return myObj.doSomething(*args, **kwargs)
+        ...
 
 myObj2 = MyClass2()
 
 def main():
-    myObj2.doSomethingWrapper(3, 'help')
+    myObj2.doSomethingWrapper(3, "poo")
     print(myObj2.doSomethingWrapper.__name__)
-    print(myObj2.doSomethingWrapper.__annotations__)
+    print(myObj.doSomething.__annotations__, myObj2.doSomethingWrapper.__annotations__)
     print(myObj2.doSomethingWrapper.__doc__)
 
 
