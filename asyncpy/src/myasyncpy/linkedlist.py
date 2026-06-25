@@ -1,29 +1,12 @@
 from collections import defaultdict
-from collections.abc import Iterable
-from typing import Self, override
+from typing import override
 
 
 class ListNode[T]:
     def __init__(self, val: T):
         self.val: T = val
-        self._next: ListNode[T] = self
-        self._prev: ListNode[T] = self
-
-    @property
-    def next(self):
-        return self._next
-
-    @next.setter
-    def next(self, val: ListNode[T]):
-        self._next = val
-
-    @property
-    def prev(self):
-        return self._prev
-
-    @prev.setter
-    def prev(self, val: ListNode[T]):
-        self._prev = val
+        self.next: ListNode[T] = self
+        self.prev: ListNode[T] = self
 
     @override
     def __str__(self):
