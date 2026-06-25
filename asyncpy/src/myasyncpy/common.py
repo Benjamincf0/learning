@@ -13,6 +13,7 @@ class Task:
     def __init__(self, coroutine: Coroutine):
         self.state: TaskState = TaskState.READY
         self.coroutine: Coroutine = coroutine
+        self.continue_checker: Callable[[], bool] = lambda: True
 
 class TaskQueue[T](CircularDoubleLL[T]):
     def __init__(self):
@@ -46,7 +47,7 @@ class Coroutine:
         def func_generator():
             yield func()
 
-        if isinstance(func, Generator):
+        if isinstance(func(), Generator):
             func_generator = func
 
         self.generator: Generator = func_generator()
@@ -70,28 +71,28 @@ class EventLoop:
         """ Runs until loop is empty """
         for node in self.taskQueue.iter_forever():
             task = node.val
-            if task.state == TaskState.RUNNING:
-                continue
-            else:
-                task.state = TaskState.RUNNING
-            try:
-                next(task.coroutine.generator)
-            except StopIteration:
-                task.state = TaskState.FINISHED
-                self.taskQueue.delete(node)
+            weCanContinue: bool = task.continue_checker()
 
-    def run_next(self):
-        """ Runs until loop is empty using recursion """
-        # Run next item in event task Queue.
-        nextNode = self.taskQueue.advance()
-        if nextNode is None: # exit condition
-            return
+            if weCanContinue:
+                try:
+                    continue_checker: Callable[[], bool] = next(task.coroutine.generator)
+                    task.continue_checker = continue_checker
+                except StopIteration:
+                    task.state = TaskState.FINISHED
+                    self.taskQueue.delete(node)
 
-        task = nextNode.val
-        try:
-            next(task.coroutine.generator)
-        except StopIteration:
-            self.taskQueue.delete(nextNode)
+    # def run_next(self):
+    #     """ Runs until loop is empty using recursion """
+    #     # Run next item in event task Queue.
+    #     nextNode = self.taskQueue.advance()
+    #     if nextNode is None: # exit condition
+    #         return
+    #
+    #     task = nextNode.val
+    #     try:
+    #         next(task.coroutine.generator)
+    #     except StopIteration:
+    #         self.taskQueue.delete(nextNode)
 
     def create_task(self, coroutine: Coroutine):
         """ Add task to event loop """

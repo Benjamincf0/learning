@@ -1,3 +1,4 @@
+from collections.abc import Callable
 import time
 
 from myasyncpy.common import Coroutine, EventLoop
@@ -11,8 +12,11 @@ def run_loop():
 def create_task(coroutine: Coroutine):
     EVENT_LOOP.create_task(coroutine)
 
-def sleep(time_s: float):
+def sleep(time_s: float) -> Callable[[], bool]:
+    """ Factory that creates an elapsed-time tester function """
     start_time = time.time()
-    end_time = start_time + time_s
-    while time.time() < end_time:
-        EVENT_LOOP.run_loop()
+    def is_sleep_over():
+        if time.time() - start_time >= time_s:
+            return True
+        return False
+    return is_sleep_over

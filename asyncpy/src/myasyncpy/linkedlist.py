@@ -86,7 +86,7 @@ class CircularDoubleLL[T]:
             self._delete(val)
 
     def __iter__(self):
-        if self._head == None:
+        if self._head is None:
             return None
 
         current_node: ListNode[T] = self._head
@@ -97,7 +97,7 @@ class CircularDoubleLL[T]:
             yield current_node
 
     def iter_forever(self):
-        if self._head == None:
+        if self._head is None:
             return None
 
         current_node: ListNode[T] = self._head
