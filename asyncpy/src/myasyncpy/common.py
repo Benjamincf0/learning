@@ -2,6 +2,7 @@ from collections.abc import Generator
 from enum import auto, Enum
 from typing import Callable, ParamSpec, TypeVar
 from .linkedlist import CircularDoubleLL
+import inspect
 
 class TaskState(Enum):
     READY = auto()
@@ -47,7 +48,7 @@ class Coroutine:
         def func_generator():
             yield func()
 
-        if isinstance(func(), Generator):
+        if inspect.isgeneratorfunction(func):
             func_generator = func
 
         self.generator: Generator = func_generator()

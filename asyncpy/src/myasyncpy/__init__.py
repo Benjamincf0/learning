@@ -1,7 +1,7 @@
 from collections.abc import Callable
 import time
 
-from myasyncpy.common import Coroutine, EventLoop
+from .common import Coroutine, EventLoop
 
 EVENT_LOOP = EventLoop()
 
