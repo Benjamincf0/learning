@@ -34,7 +34,7 @@ class CircularDoubleLL[T]:
             newNode.prev = self._head.prev
             newNode.prev.next = newNode
             newNode.next.prev = newNode
-            self._head = newNode
+            self._head = newNode.next
         self._count += 1
         self._node_table[newNode.val].append(newNode)
 
@@ -87,15 +87,6 @@ class CircularDoubleLL[T]:
         while self._count > 0:
             yield current_node
             current_node = current_node.next
-
-    def advance(self) -> ListNode[T]|None:
-        if self._head == None:
-            return None
-
-        current_node: ListNode[T] = self._head
-        if self._count > 0:
-            self._head = self._head.next
-            return current_node
 
     def __len__(self):
         return self._count

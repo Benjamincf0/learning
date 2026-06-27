@@ -19,18 +19,18 @@ class TestCircularDoubleLL:
         self.ll.add(4)
         self.ll.add(10)
 
-        assert str(self.ll) == "LinkedList: - [10] -- [4] -- [2] -"
+        assert str(self.ll) == "LinkedList: - [2] -- [4] -- [10] -"
         assert len(self.ll) == 3
-        self.check_expected((10, 4, 2))
+        self.check_expected((2, 4, 10))
 
         self.ll.add(8)
         self.ll.add(10)
         self.ll.add("hehe")
         self.ll.add(67)
 
-        assert str(self.ll) == "LinkedList: - [67] -- [hehe] -- [10] -- [8] -- [10] -- [4] -- [2] -"
+        assert str(self.ll) == "LinkedList: - [2] -- [4] -- [10] -- [8] -- [10] -- [hehe] -- [67] -"
         assert len(self.ll) == 7
-        self.check_expected((67, 'hehe', 10, 8, 10, 4, 2))
+        self.check_expected((2, 4, 10, 8, 10, 'hehe', 67))
 
     def test_rm_nodes(self):
         with pytest.raises(KeyError):
@@ -44,11 +44,11 @@ class TestCircularDoubleLL:
 
         self.ll.delete("hehe")
 
-        self.check_expected((67, 10, 8, 10))
+        self.check_expected((10, 8, 10, 67))
         assert len(self.ll) == 4
-        assert str(self.ll) == "LinkedList: - [67] -- [10] -- [8] -- [10] -"
+        assert str(self.ll) == "LinkedList: - [10] -- [8] -- [10] -- [67] -"
 
         self.ll.delete(10)
-        self.check_expected((67, 8, 10))
+        self.check_expected((10, 8, 67))
         assert len(self.ll) == 3
-        assert str(self.ll) == "LinkedList: - [67] -- [8] -- [10] -"
+        assert str(self.ll) == "LinkedList: - [10] -- [8] -- [67] -"
