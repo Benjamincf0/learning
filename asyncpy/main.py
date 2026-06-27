@@ -10,17 +10,10 @@ def processA():
 @myasyncpy.common.Coroutine
 def processB():
     print("B")
-    yield myasyncpy.sleep(0.099996)
+    yield myasyncpy.sleep(0.0999955)
     print("B")
 
-@myasyncpy.common.Coroutine
-def processC():
-    print("C")
-    yield myasyncpy.sleep(1.0)
-    print("C")
-
 if __name__ == "__main__":
-    myasyncpy.create_task(processB)
     myasyncpy.create_task(processA)
-    # myasyncpy.create_task(processC)
+    myasyncpy.create_task(processB)
     myasyncpy.run_loop()
