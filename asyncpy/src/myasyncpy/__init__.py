@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from functools import wraps
 import time
 
 from .common import Coroutine, EventLoop
@@ -6,9 +7,11 @@ from .common import Coroutine, EventLoop
 EVENT_LOOP = EventLoop()
 
 
+@wraps(EventLoop.run_loop)
 def run_loop():
     EVENT_LOOP.run_loop()
 
+@wraps(EventLoop.create_task)
 def create_task(coroutine: Coroutine):
     EVENT_LOOP.create_task(coroutine)
 
