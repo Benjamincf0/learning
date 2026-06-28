@@ -11,12 +11,6 @@ def doStuff(c: str, secs: float) -> Generator[None, None, str]:
     print("Finished", c, "after", actual_sleep_time)
     return f'Coro {c} result'
 
-async def doStuffAsync(c: str, secs: float) -> str:
-    print("Starting", c)
-    actual_sleep_time = await aio.sleep(secs)
-    print("Finished", c, "after", actual_sleep_time)
-    return f'Coro {c} result'
-
 @aio.__async__
 def main():
     print("\n\nStandard coroutine object:")
@@ -24,6 +18,12 @@ def main():
     results = yield from aio.gather(doStuff('A', 0.3), doStuff('B', 0.2), doStuff('C', 0.1)).__await__()
     print(results)
     print('Ran all coros in', time.time()-start, 'seconds')
+
+async def doStuffAsync(c: str, secs: float) -> str:
+    print("Starting", c)
+    actual_sleep_time = await aio2.sleep(secs)
+    print("Finished", c, "after", actual_sleep_time)
+    return f'Coro {c} result'
 
 async def mainAsync():
     print("\n\nStandard coroutine object:")

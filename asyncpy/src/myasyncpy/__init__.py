@@ -38,10 +38,10 @@ def __async__[Y, S, R](gen_func: Callable[..., Generator[Y, S, R]]) -> Callable[
 
 class sleep:
     def __init__(self, seconds: float):
-        self._start: float = time.time()
+        self._start: float = time.monotonic()
         self._expected_end: float = self._start + seconds
 
     def __await__(self) -> Generator[None, None, float]:
-        while time.time() < self._expected_end:
+        while time.monotonic() < self._expected_end:
             yield
-        return time.time() - self._start
+        return time.monotonic() - self._start
