@@ -86,7 +86,6 @@ class EventLoop:
         self.taskQueue.add(task)
         return task
 
-    def gather(self, *coros: Coroutine[Any, Any, Any]):
+    def create_tasks(self, *coros: Coroutine[Any, Any, Any]) -> list[Task[Any, Any, Any]]:
         tasks = [self.create_task(coro) for coro in coros]
-        self.run_loop()
-        return [task.result for task in tasks]
+        return tasks

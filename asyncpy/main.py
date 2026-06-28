@@ -17,9 +17,15 @@ async def doStuffAsync(c: str, secs: float) -> str:
     print("Finished", c, "after", actual_sleep_time)
     return f'Coro {c} result'
 
-# doStuffAsync: Callable[[str, int], Coroutine[None, None, str]]
+@aio.__async__
+def main():
+    print("\n\nStandard coroutine object:")
+    start = time.time()
+    results = yield from aio.gather(doStuffAsync('A', 0.3), doStuffAsync('B', 0.2), doStuffAsync('C', 0.1)).__await__()
+    print(results)
+    print('Ran all coros in', time.time()-start, 'seconds')
 
-async def main():
+async def mainAsync():
     print("\n\nStandard coroutine object:")
     start = time.time()
     results = await aio2.gather(doStuffAsync('A', 0.3), doStuffAsync('B', 0.2), doStuffAsync('C', 0.1))
@@ -28,9 +34,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    start = time.time()
-    print(aio.gather(doStuff('A', 0.3), doStuff('B', 0.2), doStuff('C', 0.1)))
-    print('Ran all coros in', time.time()-start, 'seconds')
-    print(aio.EL.taskQueue)
-
-    aio2.run(main())
+    aio.run(main())
+    aio2.run(mainAsync())
