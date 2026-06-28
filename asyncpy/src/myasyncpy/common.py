@@ -1,62 +1,60 @@
 from collections.abc import Generator
 from enum import auto, Enum
-from typing import Callable, ParamSpec, TypeVar
+from typing import Any, Callable, override
 from .linkedlist import CircularDoubleLL
 import inspect
 
-class TaskState(Enum):
-    READY = auto()
-    RUNNING = auto()
-    PAUSED = auto()
+class FutureState(Enum):
+    PENDING = auto()
+    CANCELED = auto()
     FINISHED = auto()
 
-class Task:
-    def __init__(self, coroutine: Coroutine):
-        self.state: TaskState = TaskState.READY
-        self.coroutine: Coroutine = coroutine
-        self.continue_checker: Callable[[], bool] = lambda: True
+class Future:
+    """ Resolves sometime in the future """
+    def __init__(self):
+        self._result: Any|None = None
+        self.state: FutureState = FutureState.PENDING
 
-class TaskQueue[T](CircularDoubleLL[T]):
+    @property
+    def result(self):
+        return self._result
+
+    @result.setter
+    def result(self, result: Any):
+        self._result = result
+        self.state = FutureState.FINISHED
+
+class Task[Y,S,R](Future):
+    def __init__(self, coroutine: Coroutine[Y,S,R]):
+        super().__init__()
+        self.coroutine: Coroutine[Y,S,R] = coroutine
+
+    @override
+    def __str__(self):
+        return f"{self.state}{self.result}{self.coroutine}"
+
+class TaskQueue(CircularDoubleLL[Task[Any, Any, Any]]):
     def __init__(self):
         super().__init__()
 
-    def enqueue(self, task: T):
+    def enqueue(self, task: Task[Any, Any, Any]):
         self.add(task)
 
     def dequeue(self):
         it = iter(self)
         return next(it)
 
-class Myfuture:
-    """ Resolves sometime in the future """
-    def __init__(self):
-        self.result: FutureResult|None = None
-
-    def resolve(self, result: FutureResult):
-        self.result = result
-
-    def get_result(self):
-        return self.result
-
-
-P = ParamSpec("P")
-R = TypeVar("R")
-
-class Coroutine:
+class Coroutine[Y, S, R]:
     """ Awaitable object """
-    def __init__(self, func: Callable[P, R]) -> None:
-        def func_generator():
-            yield func()
+    def __init__(self, gen_func: Callable[..., Generator[Y, S, R]], *args: Any, **kwargs: Any) -> None:
+        if not inspect.isgeneratorfunction(gen_func):
+            raise Exception("Expect a generator function.")
 
-        if inspect.isgeneratorfunction(func):
-            func_generator = func
+        self.generator: Generator[Y, S, R] = gen_func(*args, **kwargs)
 
-        self.generator: Generator = func_generator()
-        self.future: Myfuture = Myfuture()
-
-    def __await__(self) -> Myfuture:
-        return Myfuture()
-
+    def __await__(self) -> Generator[Y, S, R]:
+        """ Should return a generator object """
+        return self.generator
 
 class EventLoop:
     """Main orchestrator"""
@@ -66,36 +64,29 @@ class EventLoop:
         if self.unique_instance is not None:
             return self.unique_instance
 
-        self.taskQueue: TaskQueue[Task] = TaskQueue()
+        self.taskQueue: TaskQueue = TaskQueue()
 
     def run_loop(self):
         """ Runs until loop is empty """
-        for node in self.taskQueue.iter_forever():
-            task = node.val
-            weCanContinue: bool = task.continue_checker()
+        for task in self.taskQueue.iter_forever():
 
-            if weCanContinue:
-                try:
-                    continue_checker: Callable[[], bool] = next(task.coroutine.generator)
-                    task.continue_checker = continue_checker
-                except StopIteration:
-                    task.state = TaskState.FINISHED
-                    self.taskQueue.delete(node)
+            try:
+                # if inspect.iscoroutine(task.coroutine):
+                #     task.coroutine.send(None)
+                # else: # it's my custom coroutine awaitable
+                task.coroutine.__await__().send(None)
+            except StopIteration as e:
+                task.state = FutureState.FINISHED
+                task.result = e.value
+                self.taskQueue.delete(task)
 
-    # def run_next(self):
-    #     """ Runs until loop is empty using recursion """
-    #     # Run next item in event task Queue.
-    #     nextNode = self.taskQueue.advance()
-    #     if nextNode is None: # exit condition
-    #         return
-    #
-    #     task = nextNode.val
-    #     try:
-    #         next(task.coroutine.generator)
-    #     except StopIteration:
-    #         self.taskQueue.delete(nextNode)
-
-    def create_task(self, coroutine: Coroutine):
-        """ Add task to event loop """
+    def create_task(self, coroutine: Coroutine[Any, Any, Any]):
+        """ Wraps a Coroutine in a task and adds it to the event loop. """
         task = Task(coroutine)
         self.taskQueue.add(task)
+        return task
+
+    def gather(self, *coros: Coroutine[Any, Any, Any]):
+        tasks = [self.create_task(coro) for coro in coros]
+        self.run_loop()
+        return [task.result for task in tasks]

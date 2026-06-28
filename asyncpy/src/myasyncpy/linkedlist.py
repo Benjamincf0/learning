@@ -1,27 +1,28 @@
 from collections import defaultdict
+from collections.abc import Generator
 from typing import override
 
 
-class ListNode[T]:
-    def __init__(self, val: T):
-        self.val: T = val
-        self.next: ListNode[T] = self
-        self.prev: ListNode[T] = self
+class ListNode[NodeType]:
+    def __init__(self, val: NodeType):
+        self.val: NodeType = val
+        self.next: ListNode[NodeType] = self
+        self.prev: ListNode[NodeType] = self
 
     @override
     def __str__(self):
         return f"[{self.val}]"
 
 
-class CircularDoubleLL[T]:
+class CircularDoubleLL[NodeType]:
     def __init__(self):
-        self._head: ListNode[T]|None = None
+        self._head: ListNode[NodeType]|None = None
         self._count: int = 0
-        self._node_table: dict[T,list[ListNode[T]]] = defaultdict(list)
+        self._node_table: dict[NodeType,list[ListNode[NodeType]]] = defaultdict(list)
 
-    def add(self, val: ListNode[T]|T):
+    def add(self, val: ListNode[NodeType]|NodeType):
         if isinstance(val, ListNode):
-            newNode: ListNode[T] = val
+            newNode: ListNode[NodeType] = val
         else:
             newNode = ListNode(val)
 
@@ -38,8 +39,8 @@ class CircularDoubleLL[T]:
         self._count += 1
         self._node_table[newNode.val].append(newNode)
 
-    def _delete(self, val: ListNode[T]|T):
-        node: ListNode[T] 
+    def _delete(self, val: ListNode[NodeType]|NodeType):
+        node: ListNode[NodeType] 
         if isinstance(val, ListNode):
             node = val
         else:
@@ -52,9 +53,11 @@ class CircularDoubleLL[T]:
         if self._head is not None and self._head == node:
             self._head = self._head.next
         self._count -= 1
+        if self._count == 0:
+            self._head = None
         # no more refs to node? => garbage collected
 
-    def delete(self, val: list[ListNode[T]|T]|ListNode[T]|T):
+    def delete(self, val: list[ListNode[NodeType]|NodeType]|ListNode[NodeType]|NodeType):
         if isinstance(val, list):
             errors = []
             for item in val:
@@ -72,20 +75,20 @@ class CircularDoubleLL[T]:
         if self._head is None:
             return None
 
-        current_node: ListNode[T] = self._head
+        current_node: ListNode[NodeType] = self._head
         yield current_node
 
         while current_node.next != self._head:
             current_node = current_node.next
             yield current_node
 
-    def iter_forever(self):
+    def iter_forever(self) -> Generator[NodeType, None, None]:
         if self._head is None:
             return None
 
-        current_node: ListNode[T] = self._head
+        current_node: ListNode[NodeType] = self._head
         while self._count > 0:
-            yield current_node
+            yield current_node.val
             current_node = current_node.next
 
     def __len__(self):

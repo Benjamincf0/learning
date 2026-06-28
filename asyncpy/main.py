@@ -1,19 +1,36 @@
-import myasyncpy
-import myasyncpy.common
+from collections.abc import Callable, Coroutine, Generator
+import time
 
-@myasyncpy.common.Coroutine
-def processA():
-    print("A")
-    yield myasyncpy.sleep(0.1)
-    print("A")
+import myasyncpy as aio
+import asyncio as aio2
 
-@myasyncpy.common.Coroutine
-def processB():
-    print("B")
-    yield myasyncpy.sleep(0.0999955)
-    print("B")
+@aio.__async__
+def doStuff(c: str, secs: float) -> Generator[None, None, str]:
+    print("Starting", c)
+    actual_sleep_time = yield from aio.sleep(secs).__await__()
+    print("Finished", c, "after", actual_sleep_time)
+    return f'Coro {c} result'
+
+async def doStuffAsync(c: str, secs: float) -> str:
+    print("Starting", c)
+    actual_sleep_time = await aio.sleep(secs)
+    print("Finished", c, "after", actual_sleep_time)
+    return f'Coro {c} result'
+
+# doStuffAsync: Callable[[str, int], Coroutine[None, None, str]]
+
+async def main():
+    print("\n\nStandard coroutine object:")
+    start = time.time()
+    results = await aio2.gather(doStuffAsync('A', 0.3), doStuffAsync('B', 0.2), doStuffAsync('C', 0.1))
+    print(results)
+    print('Ran all coros in', time.time()-start, 'seconds')
+
 
 if __name__ == "__main__":
-    myasyncpy.create_task(processA)
-    myasyncpy.create_task(processB)
-    myasyncpy.run_loop()
+    start = time.time()
+    print(aio.gather(doStuff('A', 0.3), doStuff('B', 0.2), doStuff('C', 0.1)))
+    print('Ran all coros in', time.time()-start, 'seconds')
+    print(aio.EL.taskQueue)
+
+    aio2.run(main())
