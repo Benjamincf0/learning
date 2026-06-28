@@ -21,7 +21,7 @@ async def doStuffAsync(c: str, secs: float) -> str:
 def main():
     print("\n\nStandard coroutine object:")
     start = time.time()
-    results = yield from aio.gather(doStuffAsync('A', 0.3), doStuffAsync('B', 0.2), doStuffAsync('C', 0.1)).__await__()
+    results = yield from aio.gather(doStuff('A', 0.3), doStuff('B', 0.2), doStuff('C', 0.1)).__await__()
     print(results)
     print('Ran all coros in', time.time()-start, 'seconds')
 
@@ -31,7 +31,6 @@ async def mainAsync():
     results = await aio2.gather(doStuffAsync('A', 0.3), doStuffAsync('B', 0.2), doStuffAsync('C', 0.1))
     print(results)
     print('Ran all coros in', time.time()-start, 'seconds')
-
 
 if __name__ == "__main__":
     aio.run(main())
