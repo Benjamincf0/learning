@@ -1,5 +1,5 @@
 from collections.abc import Callable, Coroutine, Generator
-import time
+import dis, ast, inspect, time
 
 import myasyncpy as aio
 import asyncio as aio2
@@ -35,3 +35,5 @@ async def mainAsync():
 if __name__ == "__main__":
     aio.run(main())
     aio2.run(mainAsync())
+    # print(ast.dump(ast.parse(inspect.getsource(aio.run)), indent=4))
+    # print(dis.dis(main().__await__))
