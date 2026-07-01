@@ -71,9 +71,6 @@ class EventLoop:
         for task in self.taskQueue.iter_forever():
 
             try:
-                # if inspect.iscoroutine(task.coroutine):
-                #     task.coroutine.send(None)
-                # else: # it's my custom coroutine awaitable
                 task.coroutine.__await__().send(None)
             except StopIteration as e:
                 task.state = FutureState.FINISHED
