@@ -36,3 +36,5 @@ type person = name * height_cm
 let me : person = (my_name, my_height)
 
 let is_tall (p : person) : bool = snd p > 190
+
+let is_tall ( (name, height) : person ) : bool = height > 190
