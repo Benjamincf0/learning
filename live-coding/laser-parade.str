@@ -1,0 +1,61 @@
+// LASER PARADE
+// Original rave music: 132 BPM, 48 bars (~87 seconds), then the story loops.
+// 1-8: ignition | 9-32: dance floor | 33-40: weightless break | 41-48: full color
+setcpm(33)
+
+stack(
+  // A warm E minor -> G -> D -> A glow. The last A chord adds a bright twist.
+  note("<e3 g3 d3 a3>").s("sawtooth")
+    .attack(.28).release(1.25)
+    .lpf(sine.slow(16).range(650, 1450))
+    .room(.65).gain(.08),
+  note("<g3 b3 f#3 c#4>").s("triangle")
+    .attack(.35).release(1.1).room(.6).pan(.25).gain(.075),
+  note("<b3 d4 a3 e4>").s("sine")
+    .attack(.4).release(1).room(.7).pan(.75).gain(.065),
+
+  // Four tiny FM glass notes climb through each chord in the intro and break.
+  note("<[e5 g5 b5 e6] [g5 b5 d6 g6] [d5 f#5 a5 d6] [a4 c#5 e5 a5]>")
+    .s("sine").fm(2.5).fmh(2)
+    .decay(.18).sustain(0).delay(.27).room(.6)
+    .pan("<.2 .8>").mask("<1!8 0!24 1!8 0!8>").gain(.11),
+
+  // The bass skips a step now and then, like the floor moved under your feet.
+  note("<e2 g2 d2 a1>").struct("x ~ [x x] ~")
+    .s("sawtooth").lpf(480).decay(.24).sustain(0)
+    .mask("<0!4 1!28 0!8 1!8>").gain(.26),
+
+  // A clean four-on-the-floor pulse, with the claps just behind it.
+  s("bd*4").mask("<0!4 1!28 0!8 1!8>").gain(.38),
+  s("~ cp ~ cp").mask("<0!8 1!24 0!8 1!8>").gain(.2),
+  s("hh*8").mask("<0!8 1!24 0!8 1!8>")
+    .gain("[.07 .12]*4").pan("[.3 .7]*4"),
+
+  // Main hook: short calls, a high answer, then a playful turn home.
+  note("<[b4 ~ d5 [e5 g5]] [e5 d5 ~ b4] [f#5 ~ e5 d5] [c#5 e5 a4 ~]>")
+    .s("sawtooth").lpf("<1500 2100 2600 1900>")
+    .decay(.2).sustain(0).delay(.16).room(.3)
+    .mask("<0!8 1!24 0!8 1!8>").gain(.17),
+
+  // Two lasers answer each other across the stereo field.
+  note("~ [e5 e6] ~ [b4 b5]").s("sine")
+    .fm(4).fmh(1.7).penv("<24 -12 36 -24>").pdecay(.14)
+    .decay(.19).sustain(0).room(.32).pan("<.1 .9>")
+    .mask("<0!8 1!24 0!8 1!8>").gain(.075),
+
+  // A slower laser sweeps into every eighth bar, announcing each new scene.
+  note("e4").s("sawtooth")
+    .penv(28).pdecay(.65).decay(.8).sustain(0)
+    .lpf(1500).phaser(2).room(.45)
+    .mask("<0!7 1>").gain(.04),
+
+  // In the final section, a new high melody opens above the original hook.
+  note("<[e6 d6 b5 g5] [d6 b5 g5 e5] [f#5 a5 d6 e6] [e6 c#6 b5 a5]>")
+    .s("sine").fm(3).fmh(1.5)
+    .decay(.16).sustain(0).delay(.2).room(.5).pan(.7)
+    .mask("<0!40 1!8>").gain(.09),
+
+  // A soft pulse of noise makes the weightless section shimmer.
+  s("pink*8").decay(.025).sustain(0).hpf(5000)
+    .mask("<0!32 1!8 0!8>").gain(.025)
+)

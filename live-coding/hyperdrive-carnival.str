@@ -1,0 +1,182 @@
+// HYPERDRIVE CARNIVAL — fast electro house at 156 BPM.
+// 88 bars: one melody moves from supersaw to sax and back again.
+setcpm(39)
+
+stack(
+  // The house pulse is steady and deliberately simple.
+  s("bd*4").mask("<1!32 0!28 1!20 0!4 1!4>")
+    .gain("<.27!28 .22 .18 .13 .08 0!28 .12 .17 .22 .26 .27!24>"),
+  s("~ cp ~ cp").mask("<0!8 1!20 0!34 1!18 0!4 1!4>").gain(.105),
+  s("~ hh ~ hh ~ hh ~ hh")
+    .mask("<0!8 1!20 0!34 1!18 0!4 1!4>").gain(.045),
+  // A quiet double-time flick before the transitions.
+  s("hh*16").mask("<0!15 1 0!55 1 0!15 1>").gain(.02),
+
+  // Short, rubbery bass notes land between the kicks.
+  note("<f#2 d2 a1 e2>").struct("~ x ~ x ~ x ~ x")
+    .s("sawtooth").lpf(520).distort("1.7:.65")
+    .decay(.18).sustain(0)
+    .mask("<0!8 1!22 0!30 1!20 0!4 1!4>").gain(.25),
+  note("<f#1 d1 a1 e1>").struct("~ x ~ x")
+    .s("sine").decay(.23).sustain(0)
+    .mask("<0!8 1!22 0!30 1!20 0!4 1!4>").gain(.15),
+
+  // Three detuned supersaws form big offbeat F#m / D / A / E stabs.
+  note("<f#4 d4 a4 e4>").struct("~ x ~ x ~ x ~ x")
+    .s("supersaw").unison(5).detune(.23).spread(.7)
+    .attack(.008).decay(.22).sustain(.05).release(.12)
+    .hpf(240).lpf("<1900!8 3100!8 4900!12 3400 2600 1800 1000 1900!32 5400!16 1900!4 6000!4>")
+    .mask("<1!32 0!32 1!16 0!4 1!4>").gain("<.065!7 .025>"),
+  note("<a4 f#4 c#5 g#4>").struct("~ x ~ x ~ x ~ x")
+    .s("supersaw").unison(5).detune(.23).spread(.7)
+    .attack(.008).decay(.22).sustain(.05).release(.12)
+    .hpf(240).lpf("<1900!8 3100!8 4900!12 3400 2600 1800 1000 1900!32 5400!16 1900!4 6000!4>")
+    .mask("<1!32 0!32 1!16 0!4 1!4>").gain("<.06!7 .022>"),
+  note("<c#5 a4 e5 b4>").struct("~ x ~ x ~ x ~ x")
+    .s("supersaw").unison(5).detune(.23).spread(.7)
+    .attack(.008).decay(.22).sustain(.05).release(.12)
+    .hpf(240).lpf("<1900!8 3100!8 4900!12 3400 2600 1800 1000 1900!32 5400!16 1900!4 6000!4>")
+    .mask("<1!32 0!32 1!16 0!4 1!4>").gain("<.055!7 .02>"),
+
+  // The first lead phrase returns, but gives every other section to a new phrase.
+  note("<[c#5 e5 f#5 ~ e5 c#5 a4 ~] [a4 c#5 d5 ~ c#5 a4 f#4 ~] [c#5 e5 a5 ~ e5 c#5 b4 ~] [b4 c#5 e5 ~ b4 g#4 e4 ~]>")
+    .s("supersaw").unison(6).detune(.18).spread(.8)
+    .attack(.015).decay(.25).sustain(.18).release(.23)
+    .lpf(5800).delay(.13).room(.22)
+    .mask("<0!16 1!8 0!40 1!8 0!16>").gain(.13),
+  note("<[a4 c#5 e5 f#5 a5 ~ g#5 e5] [f#5 a5 d6 ~ c#6 a5 f#5 e5] [c#5 e5 a5 c#6 b5 ~ a5 e5] [g#4 b4 e5 g#5 f#5 e5 c#5 b4]>")
+    .s("supersaw").unison(6).detune(.18).spread(.8)
+    .attack(.015).decay(.25).sustain(.18).release(.23)
+    .lpf(5800).delay(.13).room(.22)
+    .mask("<0!24 1!4 0!44 1!8 0!4 1!4>").gain(.125),
+
+  // A rolling synth line supplies the speed between those bigger notes.
+  note("<[f#5 a5 c#6 a5 f#5 e5 c#5 a4] [d5 f#5 a5 f#5 d5 c#5 a4 f#4] [a4 c#5 e5 c#5 a4 b4 c#5 e5] [e5 g#5 b5 g#5 e5 c#5 b4 g#4]>")
+    .s("square").fm(2).fmh(2)
+    .attack(.008).decay(.19).sustain(.12).release(.18)
+    .lpf(4200).delay(.1).pan("<.25 .75>")
+    .mask("<0!8 1!22 0!34 1!16 0!4 1!4>")
+    .gain("<.06!15 0>"),
+
+  // The sequencer suddenly doubles its speed for a single bar.
+  note("[f#5 a5 c#6 a5 f#5 e5 c#5 a4]").fast(2)
+    .s("square").fm(2).fmh(2)
+    .attack(.005).decay(.13).sustain(.12).release(.16)
+    .lpf(4400).delay(.11).pan("<.2 .8>")
+    .mask("<0!15 1 0!55 1 0!15 1>").gain(.058),
+
+  // Pitch-bent FM shots are the track's sparkle: ricochet, reply, disappear.
+  note("<[f#5 ~ c#6 ~] [a5 ~ e6 ~] [e5 ~ b5 ~] [g#5 ~ d#6 ~]>")
+    .s("sine").fm(7).fmh(1.73)
+    .penv("<-24 19 -36 26>").pdecay(.14)
+    .decay(.22).sustain(0).pan("<.1 .9>")
+    .delay(.13).mask("<0!2 1 0>")
+    .mask("<1!32 0!24 1!32>").gain(.08),
+  note("c#5").s("sawtooth")
+    .penv(-28).pdecay(.45).attack(.01).decay(.5).sustain(0)
+    .lpf(2400).phaser(3).pan("<.85 .15>")
+    .mask("<0!5 1 0!2>")
+    .mask("<1!32 0!24 1!32>").gain(.06),
+
+  // After the sax bridge, the beat returns with a warped radio transmission.
+  note("[f#4 ~ f#5 ~ c#6 ~ a5 ~]")
+    .s("sawtooth").penv("<24 -12>").pdecay(.2)
+    .vowel("<a e>").lpf(2600)
+    .decay(.28).sustain(0).room(.2)
+    .mask("<0!60 1!4 0!24>").gain(.115),
+
+  // A brief octave jump answers the hook at the end of every fourth bar.
+  note("[~ ~ c#6 f#6]").s("supersaw")
+    .unison(4).detune(.12).spread(.75)
+    .attack(.015).decay(.3).sustain(.15).release(.28)
+    .lpf(5200).room(.25)
+    .mask("<0!3 1>").mask("<1!32 0!24 1!32>").gain(.065),
+
+  // The piano enters at bar 29; the new bass and beat join while the kick fades.
+  s("bd ~ ~ ~ ~ ~ bd ~")
+    .mask("<0!30 1!18 0!40>")
+    .gain("<0!30 .07 .11 .16!12 .13 .1 .07 .04 0!40>"),
+  s("~ ~ rim ~ ~ rim ~ ~")
+    .mask("<0!30 1!18 0!40>")
+    .gain("<0!30 .025 .04 .055!12 .045 .035 .025 .015 0!40>"),
+  s("~ hh ~ ~ hh ~ ~ ~")
+    .mask("<0!30 1!18 0!40>").gain(.025),
+  note("<[f#2 ~ c#3 e3 ~ c#3 a2 ~] [d2 ~ a2 c#3 ~ a2 f#2 ~] [a1 ~ e2 g#2 ~ e2 c#2 ~] [e2 ~ b2 d3 ~ b2 g#2 ~]>")
+    .s("gm_electric_bass_finger").attack(.01).release(.16)
+    .mask("<0!30 1!18 0!40>")
+    .gain("<0!30 .08 .13 .19!8 .14!4 .12 .09 .06 .03 0!40>"),
+  note("<[f#4,a4,c#5,e5,g#5] [d4,f#4,a4,c#5,e5] [a3,c#4,e4,g#4,b4] [e4,g#4,b4,d5,f#5]>")
+    .struct("~ x ~ [x x] ~ x ~ ~")
+    .s("gm_epiano2").attack(.01).release(.32).room(.12).orbit(3)
+    .mask("<0!28 1!20 0!40>")
+    .gain("<0!28 .025 .05 .075 .09 .09!8 .05!8 0!40>"),
+  note("<[c#5 e5 f#5 ~] [e5 c#5 a4 ~] [a4 c#5 d5 ~] [c#5 a4 f#4 ~]>")
+    .s("gm_alto_sax")
+    .attack(.015).release(.38).hpf(280).room(.06).orbit(2)
+    .mask("<0!28 1!4 0!56>").gain(.19),
+
+  // Bars 41-48: the sax stretches and answers the hook's C#-E-F# rise.
+  note("<[~ c#5 e5 ~ f#5 a5 ~ g#5] [~ f#5 e5 ~ c#5 a4 ~ c#5] [~ e5 g#5 ~ a5 b5 ~ a5] [~ g#5 f#5 ~ e5 d5 ~ b4]>")
+    .s("gm_alto_sax").attack(.015).release(.4)
+    .hpf(280).room(.06).orbit(2).pan(.5)
+    .mask("<0!40 1!8 0!40>").gain(.38),
+
+  // Bars 49-56: rhythm falls away; the same harmony turns tender.
+  note("<[f#3,a3,c#4,e4] [d3,f#3,a3,c#4] [a3,c#4,e4,g#4] [e3,g#3,b3,d4]>")
+    .s("gm_epiano2").attack(.12).release(1.2).room(.22).orbit(3)
+    .mask("<0!46 1!10 0!32>")
+    .gain("<0!46 .025 .045 .08!8 0!32>"),
+  note("<f#2 d2 a1 e2>").s("sine")
+    .attack(.12).release(1).gain(.08)
+    .mask("<0!48 1!8 0!32>"),
+  note("<[c#5 ~ ~ e5] [f#5 ~ e5 ~] [a5 ~ ~ g#5] [f#5 e5 ~ ~]>")
+    .s("gm_alto_sax").attack(.025).release(.75)
+    .hpf(280).room(.07).orbit(2).pan(.5)
+    .mask("<0!48 1!8 0!32>").gain(.42),
+
+  // The sax holds on while the hook quietly becomes electronic again.
+  note("<[c#5 ~ ~ ~] [f#5 ~ ~ ~] [e5 ~ ~ ~] [c#5 ~ ~ ~]>")
+    .s("gm_alto_sax").attack(.04).release(.9)
+    .hpf(280).room(.07).orbit(2).pan(.5)
+    .mask("<0!56 1!4 0!28>").gain(.22),
+  note("<[c#5 ~ e5 ~] [f#5 ~ e5 ~] [a5 ~ g#5 ~] [f#5 e5 c#5 ~]>")
+    .s("sine").fm(2.5).fmh(2)
+    .attack(.1).release(.7).room(.35).delay(.15)
+    .mask("<0!56 1!8 0!24>").gain(.085),
+  note("<[f#4,a4,c#5] [d4,f#4,a4] [a4,c#5,e5] [e4,g#4,b4]>")
+    .s("supersaw").unison(4).detune(.13).spread(.65)
+    .attack(.12).release(.7).lpf(2100)
+    .mask("<0!62 1!2 0!24>").gain(.075),
+
+  // Low synth weight and a single impact make the big returns feel earned.
+  note("<f#3 d3 a2 e3>").s("supersaw")
+    .unison(4).detune(.13).spread(.55)
+    .attack(.01).decay(.38).sustain(.13).release(.28)
+    .lpf(1450).mask("<0!16 1!16 0!32 1!16 0!4 1!4>").gain(.08),
+  note("f#1").s("sine").penv(24).pdecay(.18)
+    .decay(.55).sustain(0)
+    .mask("<0!16 1 0!47 1 0!19 1 0!3>").gain(.17),
+
+  // At the final return, the sax quotes the bridge above the house beat.
+  note("<[c#5 ~ e5 f#5] [a5 ~ g#5 e5] [f#5 ~ e5 c#5] [b4 ~ c#5 f#5]>")
+    .s("gm_alto_sax").attack(.015).release(.4)
+    .hpf(280).room(.06).orbit(2).pan(.5)
+    .mask("<0!84 1!4>").gain(.3),
+
+  // Two brief drops in energy leave space for the next surge.
+  note("<f#4 d4 a4 e4>").s("supersaw")
+    .unison(5).detune(.18).spread(.85)
+    .attack(.25).release(1.5).lpf(1600).room(.45)
+    .mask("<0!56 1!4 0!20 1!4 0!4>").gain(.12),
+
+  // Sweeps lead into each return; the final section adds a high answer.
+  note("f#4").s("supersaw").unison(5).detune(.2).spread(.75)
+    .penv(24).pdecay(1.1).attack(.03).release(.8)
+    .lpf(3800).room(.35)
+    .mask("<0!15 1 0!47 1 0!19 1 0!4>").gain(.075),
+  note("<[a5 c#6 f#6 ~] [f#6 e6 d6 ~] [e6 c#6 a5 ~] [g#5 b5 e6 ~]>")
+    .s("supersaw").unison(4).detune(.12).spread(.7)
+    .attack(.01).decay(.2).sustain(.1).release(.25)
+    .delay(.2).room(.35).pan(.7)
+    .mask("<0!72 1!8 0!8>").gain(.075)
+)

@@ -1,0 +1,64 @@
+// SKIBIDI DREAM MACHINE / AFTER HOURS
+// 108 BPM. A 32-bar story (~71 seconds) that loops back to its dreamy opening.
+// Bars 1-4: float. 5-16: groove. 17-28: bloom. 29-32: exhale.
+setcpm(27)
+
+stack(
+  // The familiar cloud: D minor, B flat, F, C.
+  note("<d4 bb3 f4 c4>").s("sawtooth")
+    .attack(.4).release(1.8).vib(4).vibmod(.06)
+    .lpf(sine.slow(16).range(680, 1150))
+    .room(.75).gain(.13),
+  note("<f4 d4 a4 e4>").s("triangle")
+    .attack(.55).release(1.7).room(.7).pan(.23).gain(.12),
+  note("<a4 f4 c5 g4>").s("sine")
+    .attack(.65).release(1.6).room(.8).pan(.77).gain(.1),
+
+  // A soft seventh or ninth slips into each chord as the room warms up.
+  note("<e5 a4 g4 d5>").s("sine")
+    .attack(1).release(1.6).room(.8).pan(.65)
+    .mask("<0!4 1!24 0!4>").gain(.055),
+
+  // The singing, almost-string melody. A little vibrato makes it feel alive.
+  note("<a4 bb4 c5 g4 a4 f4 a4 g4 d5 c5 c5 e5 d5 bb4 a4 g4>")
+    .s("sawtooth").attack(.75).release(1.8)
+    .vib(5).vibmod(.13)
+    .lpf(sine.slow(16).range(550, 1400))
+    .pan(sine.slow(16).range(.35, .65))
+    .room(.8).gain("<.075!8 .105!8 .12!8 .075!8>"),
+
+  // A quiet answer joins the melody for the final lift.
+  note("<f5 d5 c5 e5 d5 bb4 a4 g4>").s("triangle")
+    .attack(.6).release(1.5).lpf(1600).room(.75).pan(.7)
+    .mask("<0!16 1!12 0!4>").gain(.065),
+
+  // Warm, syncopated bass arrives after the floating introduction.
+  note("<d2 bb1 f2 c2>").struct("x ~ x [~ x]")
+    .s("sawtooth").lpf(430).decay(.24).sustain(0)
+    .mask("<0!4 1!24 0!4>").gain(.26),
+
+  // The original dance beat: soft at the edges, full in the middle.
+  s("bd ~ bd ~, ~ cp ~ cp, hh*8, ~ ~ ~ [rim rim]")
+    .gain("<.25!4 .46!24 .24!4>"),
+
+  // Ski-bi-di, still the playful center of the track.
+  note("[a4 c5 d5] ~ [a4 c5 d5] [f5 e5 d5]")
+    .s("sawtooth").vowel("<i a o e>").lpf(1700)
+    .decay(.13).sustain(0).delay(.2).room(.4)
+    .mask("<0!4 1!24 0!4>").gain(.16),
+
+  // A hushed, breathy reply weaves through the groove.
+  note("~ [d5 a4] ~ [c5 g4]").s("sawtooth")
+    .vowel("<u i a o>").lpf(1050)
+    .decay(.11).sustain(0).delay(.3).room(.55).pan(.3)
+    .mask("<0!8 1!20 0!4>").gain(.065),
+
+  // The original little stars, then a ribbon of notes for the bloom.
+  note("~ [a5 c6] ~ [g5 e5]").s("sine")
+    .decay(.12).sustain(0).delay(.45).room(.85)
+    .pan("<.15 .85>").gain(.11),
+  note("[d5 f5 a5 c6] [bb4 d5 f5 a5] [a4 c5 f5 g5] [g4 c5 e5 g5]")
+    .s("sine").decay(.13).sustain(0)
+    .delay(.35).room(.8).pan("<.2 .8>")
+    .mask("<0!16 1!12 0!4>").gain(.055)
+)

@@ -1,0 +1,52 @@
+// JUMPER — Waterflame / Geometry Dash level 7, Strudel sketch
+// Melody adapted from a player transcription; chords: Db, Fm, Gb, Ab.
+// Around 178 BPM. 64 bars (~86 seconds) before this level-length sketch loops.
+setcpm(44.5)
+
+stack(
+  // The bright, bouncing opening phrase.
+  note("[f4 f4 db4 ab4 db4 db5 gb4 ab4 f4 ab4]").slow(2)
+    .s("square").lpf(2200).decay(.09).sustain(0).room(.12)
+    .mask("<1!8 0!48 1!8>").gain(.15),
+  note("[f4 ab4 db5 f4 f4 db5 ab4 gb4 f4 eb4 db4]").slow(2)
+    .s("sawtooth").lpf(1800).decay(.1).sustain(0).room(.12)
+    .mask("<0!4 1!4 0!56>").gain(.11),
+
+  // Short, quiet synth pulses give the melody harmony without an organ bed.
+  note("<db4 f3 gb3 ab3>").s("sawtooth")
+    .struct("x ~ ~ x").lpf(1000).decay(.1).sustain(0)
+    .room(.1).gain(.075),
+  note("<f4 ab3 bb3 c4>").s("square")
+    .struct("~ x ~ ~").lpf(1400).decay(.08).sustain(0)
+    .pan(.25).gain(.045),
+
+  // The signature doubled-note hook, translated from the transcription.
+  note("<[db5 db5 f5 f5 gb5 gb5 f5 f5] [db5 db5 f5 f5 gb5 gb5 ab5 ab5]>")
+    .s("sawtooth").lpf(2300).decay(.095).sustain(0)
+    .delay(.12).room(.12).pan(.58)
+    .mask("<0!8 1!16 0!16 1!16 0!8>").gain(.15),
+  note("<[db4 db4 f4 f4 gb4 gb4 f4 f4] [db4 db4 f4 f4 gb4 gb4 ab4 ab4]>")
+    .s("square").lpf(1000).decay(.08).sustain(0).pan(.36)
+    .mask("<0!8 1!16 0!16 1!16 0!8>").gain(.035),
+
+  // The tumbling answer: Db-F-Gb-F-Gb-Ab-Db, then back down.
+  note("<[db5 f5 gb5 f5] [gb5 ab5 db6 ab5] [gb5 f5 gb5 f5] [db5 f5 db5 f5]>")
+    .s("sawtooth").lpf(2400).decay(.11).sustain(0)
+    .delay(.12).room(.15).pan(.65)
+    .mask("<0!24 1!16 0!24>").gain(.15),
+
+  // Light, springy low end; the bass follows the same chord roots.
+  note("<db2 f2 gb2 ab2>").struct("x ~ x [~ x]")
+    .s("sawtooth").lpf(440).decay(.18).sustain(0)
+    .mask("<0!4 1!52 0!8>").gain(.2),
+
+  // Drums sit well behind the melody now.
+  s("bd ~ [~ bd] ~")
+    .mask("<0!4 1!52 0!8>").gain(.16),
+  s("~ sd ~ sd")
+    .mask("<0!4 1!52 0!8>").gain(.09),
+  s("hh*8")
+    .mask("<0!4 1!52 0!8>").gain(.045),
+  s("~ ~ ~ [sh sh]")
+    .mask("<0!24 1!32 0!8>").gain(.045)
+)

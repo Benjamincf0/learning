@@ -1,0 +1,47 @@
+// STEREO MADNESS — Geometry Dash level version, Strudel sketch
+// ForeverBound, 160 BPM. 56 bars ~= 84 seconds, then the level section loops.
+// Opening fifths transcribed from the repeated C/G, G/D, A/E, F/C figure.
+setcpm(40)
+
+stack(
+  // 0:00 — the instantly recognizable, alternating two-note opening.
+  // Each line of eight notes takes one bar; the four bars repeat twice.
+  note("<[c5 g5 c5 g5 c5 g5 c5 g5] [g4 d5 g4 d5 g4 d5 g4 d5] [a4 e5 a4 e5 a4 e5 a4 e5] [f4 c5 f4 c5 f4 c5 f4 c5]>")
+    .s("triangle").decay(.11).sustain(0)
+    .room(.23).pan("<.3 .7>")
+    .gain("<.22!8 .17!8 .10!32 .16!8>"),
+
+  // 0:12 — the soft pad and low notes appear beneath that same figure.
+  note("<c4 g3 a3 f3>").s("sawtooth")
+    .attack(.18).release(1).lpf(780).room(.42)
+    .mask("<0!8 1!48>").gain(.12),
+  note("<e4 b3 c4 a3>").s("triangle")
+    .attack(.2).release(.9).room(.4).pan(.2)
+    .mask("<0!8 1!48>").gain(.09),
+  note("<g4 d4 e4 c4>").s("sine")
+    .attack(.2).release(.9).room(.4).pan(.8)
+    .mask("<0!8 1!48>").gain(.08),
+
+  // The drums join before the big synth entry; this is a brisk techno break.
+  s("bd ~ [~ bd] ~, ~ sd ~ sd, hh*8")
+    .mask("<0!7 1!49>").gain(.43),
+  s("~ ~ ~ cp")
+    .mask("<0!8 1!48>").gain(.13),
+
+  // 0:25 — the saw and bass finally arrive. The repeated C/B/D/E contour
+  // follows the level's main pulse instead of inventing a new tune.
+  note("<c2 g1 a1 f1>").struct("x ~ [x x] ~")
+    .s("sawtooth").lpf(430).decay(.16).sustain(0)
+    .mask("<0!16 1!40>").gain(.29),
+  note("<[c6 c6 c6 c6 c6 c6 c6 c6] [c6 b5 b5 b5 b5 b5 b5 b5] [b5 c6 c6 c6 c6 c6 c6 c6] [c6 d6 d6 d6 d6 d6 d6 e6]>")
+    .s("sawtooth").lpf(2600).decay(.11).sustain(0)
+    .room(.2).pan(.58)
+    .mask("<0!16 1!40>").gain(.16),
+  note("<[c5 c5 c5 c5 c5 c5 c5 c5] [c5 b4 b4 b4 b4 b4 b4 b4] [b4 c5 c5 c5 c5 c5 c5 c5] [c5 d5 d5 d5 d5 d5 d5 e5]>")
+    .s("square").lpf(1500).decay(.09).sustain(0)
+    .pan(.42).mask("<0!16 1!40>").gain(.055),
+
+  // The opening figure keeps sparkling behind the saw, as in the source.
+  s("~ ~ ~ cr")
+    .mask("<0!15 1 0!15 1 0!15 1 0!8>").gain(.12)
+)
